@@ -1,13 +1,13 @@
 TEMPLATE = app
-TARGET = bitcoin-qt
-macx:TARGET = "Bitcoin-Qt"
+TARGET = mmxivcoin-qt
+macx:TARGET = "MMXIVcoin-Qt"
 VERSION = 0.8.6
 INCLUDEPATH += src src/json src/qt
 QT += network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
-{{WIN_DEPS}}
+#{{WIN_DEPS}}
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -308,7 +308,7 @@ SOURCES += src/qt/test/test_main.cpp \
 HEADERS += src/qt/test/uritests.h
 DEPENDPATH += src/qt/test
 QT += testlib
-TARGET = bitcoin-qt_test
+TARGET = mmxivcoin-qt_test
 DEFINES += BITCOIN_QT_TEST
   macx: CONFIG -= app_bundle
 }
