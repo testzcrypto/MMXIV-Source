@@ -1,28 +1,28 @@
-Name Bitcoin
+Name MMXIV
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.8.6
+!define VERSION 1.0.0
 !define COMPANY "MMXIV project"
-!define URL http://www.bitcoin.org/
+!define URL http://www.mmxivcoin.com
 
 # MUI Symbol Definitions
-!define MUI_ICON "../share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "../share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "..\share\pixmaps\bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "..\share\pixmaps\nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "../share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "..\share\pixmaps\nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER Bitcoin
-!define MUI_FINISHPAGE_RUN $INSTDIR\bitcoin-qt.exe
-!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "../share/pixmaps/nsis-wizard.bmp"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER MMXIV
+!define MUI_FINISHPAGE_RUN $INSTDIR\mmxivcoin-qt.exe
+!define MUI_UNICON "..\share\pixmaps\bitcoin.ico"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "..\share\pixmaps\nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -45,14 +45,14 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile bitcoin-0.8.6-win32-setup.exe
-InstallDir $PROGRAMFILES\Bitcoin
+OutFile MMXIV-1.0.0-win32-setup.exe
+InstallDir $PROGRAMFILES\MMXIV
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
-VIProductVersion 0.8.6.0
-VIAddVersionKey ProductName Bitcoin
+VIProductVersion 1.0.0.0
+VIAddVersionKey ProductName MMXIV
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
@@ -66,19 +66,8 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ../release/bitcoin-qt.exe
-    File /oname=COPYING.txt ../COPYING
-    File /oname=readme.txt ../doc/README_windows.txt
-    SetOutPath $INSTDIR\daemon
-    File ../src/bitcoind.exe
-    SetOutPath $INSTDIR\src
-    File /r /x *.exe /x *.o ../src\*.*
-    SetOutPath $INSTDIR
+    File ..\release\mmxivcoin-qt.exe
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
-
-    # Remove old wxwidgets-based-bitcoin executable and locales:
-    Delete /REBOOTOK $INSTDIR\bitcoin.exe
-    RMDir /r /REBOOTOK $INSTDIR\locale
 SectionEnd
 
 Section -post SEC0001
@@ -87,7 +76,7 @@ Section -post SEC0001
     WriteUninstaller $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\MMXIV.lnk" $INSTDIR\bitcoin-qt.exe
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\MMXIV.lnk" $INSTDIR\mmxivcoin-qt.exe
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall MMXIV.lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
@@ -100,8 +89,8 @@ Section -post SEC0001
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
     WriteRegStr HKCR "mmxiv" "URL Protocol" ""
     WriteRegStr HKCR "mmxiv" "" "URL:mmxiv"
-    WriteRegStr HKCR "mmxiv\DefaultIcon" "" $INSTDIR\bitcoin-qt.exe
-    WriteRegStr HKCR "mmxiv\shell\open\command" "" '"$INSTDIR\mmxiv-qt.exe" "%1"'
+    WriteRegStr HKCR "mmxiv\DefaultIcon" "" $INSTDIR\mmxivcoin-qt.exe
+    WriteRegStr HKCR "mmxiv\shell\open\command" "" '"$INSTDIR\mmxivcoin-qt.exe" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -119,11 +108,7 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
-    Delete /REBOOTOK $INSTDIR\bitcoin-qt.exe
-    Delete /REBOOTOK $INSTDIR\COPYING.txt
-    Delete /REBOOTOK $INSTDIR\readme.txt
-    RMDir /r /REBOOTOK $INSTDIR\daemon
-    RMDir /r /REBOOTOK $INSTDIR\src
+    Delete /REBOOTOK $INSTDIR\mmxivcoin-qt.exe
     DeleteRegValue HKCU "${REGKEY}\Components" Main
 SectionEnd
 
@@ -133,8 +118,6 @@ Section -un.post UNSEC0001
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\MMXIV.lnk"
     Delete /REBOOTOK "$SMSTARTUP\MMXIV.lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
-    Delete /REBOOTOK $INSTDIR\debug.log
-    Delete /REBOOTOK $INSTDIR\db.log
     DeleteRegValue HKCU "${REGKEY}" StartMenuGroup
     DeleteRegValue HKCU "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
